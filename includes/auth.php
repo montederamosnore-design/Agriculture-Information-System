@@ -6,7 +6,14 @@
  */
 
 // If you rename the project folder, change this line too.
-const BASE_URL = '/agri-system';
+$host = explode(':', $_SERVER['HTTP_HOST'] ?? '')[0];
+
+define(
+    'BASE_URL',
+    in_array($host, ['localhost', '127.0.0.1'], true)
+        ? '/agri-system'
+        : ''
+);
 
 // ---------------------------------------------------------------
 // 1. Start the session (this is how PHP remembers who is logged in)
