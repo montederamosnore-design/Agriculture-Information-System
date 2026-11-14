@@ -18,15 +18,25 @@ define(
 // ---------------------------------------------------------------
 // 1. Start the session (this is how PHP remembers who is logged in)
 // ---------------------------------------------------------------
+
 if (session_status() === PHP_SESSION_NONE) {
-    // Own session name, so other projects inside htdocs do not mix with this one.
+
     session_name('agri_session');
+
+    // Detect HTTPS when hosted on Render.
+    $isHttps = (
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
+    );
+
     session_set_cookie_params([
-        'lifetime' => 0,        // cookie ends when the browser is closed
+        'lifetime' => 0,
         'path'     => '/',
-        'httponly' => true,     // the cookie cannot be read by scripts
-        'samesite' => 'Lax',    // helps block requests coming from other websites
+        'secure'   => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax',
     ]);
+
     session_start();
 }
 
