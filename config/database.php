@@ -7,25 +7,38 @@ class Database
     private string $dbname;
     private string $username;
     private string $password;
+    private bool $isRender;
 
     public function __construct()
     {
-        // Render uses its Environment Variables.
-        // The .env file is optional for local development.
-        $env = $this->loadEnv(__DIR__ . '/../.env');
+        // Render provides a single DATABASE_URL variable
+        $databaseUrl = getenv('DATABASE_URL');
 
-        $this->host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? '');
-        $this->port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '5432');
-        $this->dbname = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'postgres');
-        $this->username = getenv('DB_USER') ?: ($env['DB_USER'] ?? '');
-        $this->password = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? '');
+        if ($databaseUrl) {
+            $parsed = parse_url($databaseUrl);
+            $this->host = $parsed['host'] ?? '';
+            $this->port = $parsed['port'] ?? '5432';
+            $this->dbname = ltrim($parsed['path'] ?? '', '/');
+            $this->username = $parsed['user'] ?? '';
+            $this->password = $parsed['pass'] ?? '';
+            $this->isRender = true;
+        } else {
+            // Local development fallback (.env or environment variables)
+            $env = $this->loadEnv(__DIR__ . '/../.env');
+
+            $this->host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
+            $this->port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '5432');
+            $this->dbname = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'agriculture_db');
+            $this->username = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'postgres');
+            $this->password = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? '');
+            $this->isRender = false;
+        }
     }
 
     private function loadEnv(string $path): array
     {
         $vars = [];
 
-        // If there is no .env file, continue without showing a warning.
         if (!is_file($path) || !is_readable($path)) {
             return $vars;
         }
@@ -54,12 +67,13 @@ class Database
 
     public function connect(): PDO
     {
-        // Check that the required database settings are present.
-        if ($this->host === '' || $this->username === '' || $this->password === '') {
+        if ($this->host === '' || $this->username === '') {
             throw new PDOException('Database environment variables are missing.');
         }
 
-        $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname};sslmode=require";
+        // Only use sslmode=require on Render; omit it for localhost
+        $sslMode = $this->isRender ? ';sslmode=require' : '';
+        $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}{$sslMode}";
 
         $pdo = new PDO($dsn, $this->username, $this->password);
 
