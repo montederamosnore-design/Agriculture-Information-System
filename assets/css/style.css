@@ -1,0 +1,228 @@
+/*
+ * assets/css/style.css
+ * Green and white agriculture theme: login page, sidebar layout, cards.
+ */
+
+:root {
+    --green-900: #14532d;
+    --green-700: #15803d;
+    --green-100: #dcfce7;
+    --green-50:  #f0fdf4;
+}
+
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f6faf7;
+}
+
+/* Make Bootstrap's green parts match the theme */
+.btn-success {
+    --bs-btn-bg: var(--green-700);
+    --bs-btn-border-color: var(--green-700);
+    --bs-btn-hover-bg: var(--green-900);
+    --bs-btn-hover-border-color: var(--green-900);
+    --bs-btn-active-bg: var(--green-900);
+    --bs-btn-active-border-color: var(--green-900);
+}
+.text-success { color: var(--green-700) !important; }
+.bg-success   { background-color: var(--green-700) !important; }
+
+/* ===================== Login page ===================== */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--green-900), var(--green-700) 55%, #4ade80);
+}
+.login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    border: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.login-brand {
+    background: var(--green-50);
+    border-bottom: 4px solid var(--green-700);
+    padding: 1.75rem 1.5rem 1.25rem;
+    text-align: center;
+}
+.login-brand h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--green-900);
+}
+.login-brand p { color: #4b5563; }
+
+/* ===================== App layout (sidebar + content) ===================== */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--green-900);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+.sidebar-brand {
+    padding: 1.25rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.sidebar-brand small {
+    display: block;
+    margin-top: .2rem;
+    font-size: .85rem;
+    font-weight: 400;
+    color: #bbf7d0;
+}
+.sidebar-nav {
+    flex: 1;
+    padding: .75rem;
+}
+.sidebar-link {
+    display: block;
+    padding: .6rem .85rem;
+    margin-bottom: .15rem;
+    border-radius: .5rem;
+    color: var(--green-100);
+    text-decoration: none;
+}
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+.sidebar-link.active {
+    background: #fff;
+    color: var(--green-900);
+    font-weight: 600;
+}
+.sidebar-user {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, .15);
+    font-size: .9rem;
+}
+.sidebar-role {
+    color: #bbf7d0;
+    font-size: .8rem;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;          /* lets wide tables scroll instead of stretching the page */
+    padding: 1.5rem 1.75rem;
+}
+
+.page-header { margin-bottom: 1.25rem; }
+.page-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--green-900);
+    margin-bottom: .15rem;
+}
+.page-header p {
+    margin: 0;
+    color: #6b7280;
+}
+.page-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: .85rem;
+    color: #9ca3af;
+}
+
+/* ===================== Cards and panels ===================== */
+.stat-card {
+    display: block;
+    height: 100%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid var(--green-700);
+    border-radius: .75rem;
+    padding: 1rem 1.1rem;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+a.stat-card:hover {
+    color: inherit;
+    box-shadow: 0 4px 12px rgba(20, 83, 45, .18);
+}
+.stat-label {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #6b7280;
+}
+.stat-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--green-900);
+}
+.stat-value small {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+.stat-card-dark {
+    background: var(--green-900);
+    border-color: var(--green-900);
+    border-left-color: #4ade80;
+}
+.stat-card-dark .stat-label { color: #bbf7d0; }
+.stat-card-dark .stat-value,
+.stat-card-dark .stat-value small { color: #fff; }
+
+.panel {
+    border: 1px solid #e5e7eb;
+    border-radius: .75rem;
+    overflow: hidden;
+}
+.panel .card-header {
+    background: var(--green-50);
+    border-bottom: 1px solid #d1fae5;
+    color: var(--green-900);
+    font-weight: 600;
+}
+.panel .table thead th {
+    background: #fff;
+    color: #6b7280;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+/* ===================== Phones and small screens ===================== */
+@media (max-width: 767.98px) {
+    .app-layout { flex-direction: column; }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+    }
+    .sidebar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem;
+    }
+    .sidebar-link { margin-bottom: 0; }
+    .main-content { padding: 1rem; }
+}
